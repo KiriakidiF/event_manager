@@ -14,6 +14,26 @@
         <p><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
       <% end %>
 
+      <!-- Form taken from Lecture notes 11-photoblog -->
+      <%= if @conn.assigns[:current_user] do %>
+          <div class="col">
+            User: <%= @current_user.name %> |
+            <%= link("Logout", to: Routes.session_path(@conn, :delete),
+              method: :delete) %>
+          </div>
+        <% else %>
+          <div class="col">
+            <%= form_for @conn, Routes.session_path(@conn, :create),
+            [class: "form-inline"], fn f -> %>
+              <%= text_input f, :email, class: "form-control" %>
+              <%= submit "Login", class: "btn btn-secondary" %>
+            <% end %>
+          </div>
+          <div class="col my-2">
+            <p><%= link "Register", to: Routes.user_path(@conn, :register) %></p>
+          </div>
+        <% end %>
+
       <%= if get_flash(@conn, :info) do %>
         <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <% end %>

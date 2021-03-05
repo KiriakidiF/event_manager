@@ -7,6 +7,7 @@ defmodule EventManagerWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug EventManagerWeb.Plugs.FetchUser
   end
 
   pipeline :api do
@@ -17,7 +18,12 @@ defmodule EventManagerWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/register", UserController, :register
     resources "/users", UserController
+
+    # Following Lecture code 11-photoblog
+    resources "/sessions", SessionController,
+      only: [:create, :delete], singleton: true
   end
 
 
