@@ -18,7 +18,7 @@
       <%= for event <- @events do %>
         <div class="col-sm-4 card">
           <div class="card-body">
-            <p class="card-text"><%= event.name %></p>
+            <p class="card-text event-name"><%= event.name %></p>
             <p class="card-text"><%= event.desc %></p>
             <p class="card-text"><%= event.date %></p>
             <%= link(

@@ -7,8 +7,4 @@ defmodule EventManagerWeb.PageController do
     events = Events.list_events()
     render(conn, "index.html", events: events)
   end
-
-  def register(conn, _params) do
-    render(conn, "register.html")
-  end
 end
