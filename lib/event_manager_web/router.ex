@@ -20,6 +20,7 @@ defmodule EventManagerWeb.Router do
     get "/", PageController, :index
     get "/register", UserController, :register
     resources "/users", UserController
+    resources "/events", EventController
 
     # Following Lecture code 11-photoblog
     resources "/sessions", SessionController,
