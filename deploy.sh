@@ -16,7 +16,7 @@ mix compile
 CFGD=$(readlink -f ~/.config/event_manager)
 
 if [ ! -d "$CFGD" ]; then
-	mkdir -p $CFGD
+	mkdir -p "$CFGD"
 fi
 
 if [ ! -e "$CFGD/base" ]; then

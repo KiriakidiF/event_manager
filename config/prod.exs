@@ -1,5 +1,14 @@
 use Mix.Config
 
+# Configure your database
+config :event_manager, EventManager.Repo,
+  username: "event_manager",
+  password: "aHah8phahNoo",
+  database: "event_manager_prod",
+  hostname: "localhost",
+  show_sensitive_data_on_connection_error: false,
+  pool_size: 10
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.

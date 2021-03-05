@@ -16,7 +16,7 @@
   <div class="row">
     <div class="row">
       <%= for event <- @events do %>
-        <div class="col-4 card">
+        <div class="col-sm card">
           <div class="card-body">
             <p class="card-text event-name"><%= event.name %></p>
             <p class="card-text"><%= event.desc %></p>
