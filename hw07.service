@@ -1,0 +1,11 @@
+[Unit]
+Description=Basic EventManager using Phoenix Framework and database storage
+
+[Service]
+User=event_manager
+WorkingDirectory=/home/event_manager/event_manager
+ExecStart=/home/event_manager/event_manager/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
