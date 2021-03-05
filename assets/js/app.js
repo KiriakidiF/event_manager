@@ -13,3 +13,7 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
+
+import flatpickr from 'flatpickr'
+
+flatpickr('#event_date_picker', {enableTime: true})

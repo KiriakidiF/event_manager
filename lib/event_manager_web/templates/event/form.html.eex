@@ -10,7 +10,8 @@
   <%= error_tag f, :name %>
 
   <%= label f, :date %>
-  <%= datetime_select f, :date %>
+  <%= text_input f, :date, id: "event_date_picker"%>
+  <!--<%= datetime_select f, :date %>-->
   <%= error_tag f, :date %>
 
   <%= label f, :desc %>

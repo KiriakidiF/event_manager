@@ -1,5 +1,33 @@
-<div class="row">
-  <div class="col">
-    Hello, World
+<!-- Heavily based on Lecture code for 02/26 photoblog-->
+<div>
+  <div class="row">
+    <header>
+      <h3>Events Hub</h3>
+    </header>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p>
+        <%= link("Create New Event",
+              to: Routes.event_path(@conn, :new)) %>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="row">
+      <%= for event <- @events do %>
+        <div class="col-sm-4 card">
+          <div class="card-body">
+            <p class="card-text"><%= event.name %></p>
+            <p class="card-text"><%= event.desc %></p>
+            <p class="card-text"><%= event.date %></p>
+            <%= link(
+                  "View Event",
+                  to: Routes.event_path(@conn, :show, event)
+                ) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

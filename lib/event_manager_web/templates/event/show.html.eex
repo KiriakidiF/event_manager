@@ -20,4 +20,4 @@
 </ul>
 
 <span><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>
-<span><%= link "Back", to: Routes.event_path(@conn, :index) %></span>
+<span><%= link "Home", to: Routes.page_path(@conn, :index) %></span>
