@@ -7,6 +7,10 @@ defmodule EventManager.Repo.Migrations.CreateEvents do
       add :date, :utc_datetime, null: false
       add :desc, :string, null: false
 
+      add :user_id, references(:users), null: false
+      #TODO ADD list of invites reference
+      #TODO add list of comments reference
+
       timestamps()
     end
 

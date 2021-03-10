@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Owner</th>
       <th>Date</th>
       <th>Desc</th>
 
@@ -14,6 +15,7 @@
 <%= for event <- @events do %>
     <tr>
       <td><%= event.name %></td>
+      <td><%= event.user.name %></td>
       <td><%= event.date %></td>
       <td><%= event.desc %></td>
 

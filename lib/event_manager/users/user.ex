@@ -6,6 +6,8 @@ defmodule EventManager.Users.User do
     field :email, :string
     field :name, :string
 
+    has_many :events, EventManager.Events.Event
+
     timestamps()
   end
 

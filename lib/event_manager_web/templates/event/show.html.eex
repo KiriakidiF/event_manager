@@ -8,6 +8,11 @@
   </li>
 
   <li>
+    <strong>Owner:</strong>
+    <%= @event.user.name %>
+  </li>
+
+  <li>
     <strong>Date:</strong>
     <%= @event.date %>
   </li>
