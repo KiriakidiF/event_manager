@@ -9,7 +9,7 @@
 
   <li>
     <strong>Owner:</strong>
-    <%= @event.user.name %>
+    <%= @event.owner.name %>
   </li>
 
   <li>
@@ -24,5 +24,7 @@
 
 </ul>
 
-<span><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>
+<%= if is_current_user?(@conn, @event.owner_id) do %>
+  <span><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>
+<% end %>
 <span><%= link "Home", to: Routes.page_path(@conn, :index) %></span>

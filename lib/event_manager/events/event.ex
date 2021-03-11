@@ -7,7 +7,7 @@ defmodule EventManager.Events.Event do
     field :desc, :string
     field :name, :string
 
-    belongs_to :user, EventManager.Users.User
+    belongs_to :owner, EventManager.Users.User
 
     timestamps()
   end
@@ -15,7 +15,7 @@ defmodule EventManager.Events.Event do
   @doc false
   def changeset(event, attrs) do
     event
-    |> cast(attrs, [:name, :date, :desc, :user_id])
-    |> validate_required([:name, :date, :desc, :user_id])
+    |> cast(attrs, [:name, :date, :desc, :owner_id])
+    |> validate_required([:name, :date, :desc, :owner_id])
   end
 end

@@ -7,19 +7,22 @@
   </div>
   <div class="row">
     <div class="col">
-      <p>
-        <%= link("Create New Event",
-              to: Routes.event_path(@conn, :new)) %>
-      </p>
+      <%= if have_current_user?(@conn) do %>
+        <p>
+          <%= link("Create New Event",
+                to: Routes.event_path(@conn, :new)) %>
+        </p>
+      <% end %>
     </div>
   </div>
   <div class="row">
     <div class="row">
       <%= for event <- @events do %>
+        <!-- TODO: Only show cards user has access to -->
         <div class="col-4-auto card">
           <div class="card-body">
             <p class="card-text event-name"><%= event.name %></p>
-            <p class="card-text"><%= event.user.name %></p>
+            <p class="card-text"><%= event.owner.name %></p>
             <p class="card-text"><%= event.desc %></p>
             <p class="card-text"><%= event.date %></p>
             <%= link(

@@ -13,16 +13,19 @@
   </thead>
   <tbody>
 <%= for event <- @events do %>
+    <!-- TODO: change to only show for invited + owner -->
     <tr>
       <td><%= event.name %></td>
-      <td><%= event.user.name %></td>
+      <td><%= event.owner.name %></td>
       <td><%= event.date %></td>
       <td><%= event.desc %></td>
 
       <td>
         <span><%= link "Show", to: Routes.event_path(@conn, :show, event) %></span>
-        <span><%= link "Edit", to: Routes.event_path(@conn, :edit, event) %></span>
-        <span><%= link "Delete", to: Routes.event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <%= if is_current_user?(@conn, event.owner_id) do %>
+          <span><%= link "Edit", to: Routes.event_path(@conn, :edit, event) %></span>
+          <span><%= link "Delete", to: Routes.event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <% end %>
       </td>
     </tr>
 <% end %>

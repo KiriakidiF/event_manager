@@ -19,7 +19,7 @@ defmodule EventManager.Events do
   """
   def list_events do
     Repo.all(Event)
-    |> Repo.preload(:user)
+    |> Repo.preload(:owner)
   end
 
   @doc """
@@ -38,7 +38,7 @@ defmodule EventManager.Events do
   """
   def get_event!(id) do
     Repo.get!(Event, id)
-    |> Repo.preload(:user)
+    |> Repo.preload(:owner)
   end
 
   @doc """

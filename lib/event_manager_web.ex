@@ -24,6 +24,8 @@ defmodule EventManagerWeb do
       import Plug.Conn
       import EventManagerWeb.Gettext
       alias EventManagerWeb.Router.Helpers, as: Routes
+
+      import EventManagerWeb.Helpers
     end
   end
 
@@ -69,6 +71,8 @@ defmodule EventManagerWeb do
       import EventManagerWeb.ErrorHelpers
       import EventManagerWeb.Gettext
       alias EventManagerWeb.Router.Helpers, as: Routes
+
+      import EventManagerWeb.Helpers
     end
   end
 
