@@ -4,7 +4,7 @@ defmodule EventManagerWeb.UserController do
   alias EventManager.Users
   alias EventManager.Users.User
 
-  alias EventManager.Plugs
+  alias EventManager.Photos
 
   def index(conn, _params) do
     users = Users.list_users()
@@ -23,11 +23,16 @@ defmodule EventManagerWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+    up = user_params["profile"]
+    {:ok, hash} = Photos.save_photo(up.filename, up.path)
+    user_params = user_params
+    |> Map.put("profile_hash", hash)
+
     case Users.create_user(user_params) do
       {:ok, _user} ->
         conn
         |> put_flash(:info, "User created successfully.")
-        |> redirect(to: conn.get_session(:redirect))
+        |> redirect(to: get_session(conn, :redirect))
           #to: Routes.user_path(conn, :show, user))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -48,6 +53,15 @@ defmodule EventManagerWeb.UserController do
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Users.get_user!(id)
+    up = user_params["profile"]
+
+    user_params = if up do
+      #TODO remove old image
+      {:ok, hash} = Photos.save_photo(up.filename, up.path)
+      Map.put(user_params, "profile_hash", hash)
+    else
+      user_params
+    end
 
     case Users.update_user(user, user_params) do
       {:ok, user} ->
@@ -60,7 +74,16 @@ defmodule EventManagerWeb.UserController do
     end
   end
 
+  def photo(conn, %{"id" => id}) do
+    user = Users.get_user!(id)
+    {:ok, _name, data} = Photos.load_photo(user.profile_hash)
+    conn
+    |> put_resp_content_type("image/jpeg")
+    |> send_resp(200, data)
+  end
+
   def delete(conn, %{"id" => id}) do
+    #TODO Remove old profile image
     user = Users.get_user!(id)
     {:ok, _user} = Users.delete_user(user)
 

@@ -24,6 +24,7 @@ defmodule EventManagerWeb.Router do
     resources "/invites", InviteController
     resources "/comments", CommentController
 
+    get "/users/photo/:id", UserController, :photo
 
 
     # Following Lecture code 11-photoblog
