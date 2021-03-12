@@ -4,13 +4,32 @@ defmodule EventManagerWeb.EventController do
   alias EventManager.Events
   alias EventManager.Events.Event
 
+  #alias EventManager.Invites
+
   alias EventManagerWeb.Plugs
+  plug Plugs.PutRedirect when action in
+    [:show]
   plug Plugs.RequireUser
-  plug :fetch_post when action in
+  plug :fetch_event when action in
     [:show, :edit, :update, :delete]
   plug :require_owner when action in
     [:edit, :update, :delete]
+  plug :require_access when action in [:show]
   #todo make sure user has access to show specific event
+
+  def require_access(conn, _args) do
+    event = conn.assigns[:event]
+
+    if is_current_user?(conn, event.owner_id)
+      || is_invited_user?(conn, event) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You do not have access to view this event.")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
+  end
 
   def require_owner(conn, _args) do
     event = conn.assigns[:event]
@@ -26,13 +45,14 @@ defmodule EventManagerWeb.EventController do
     end
   end
 
-  #fetches a pose with a given id in conn
-  def fetch_post(conn, _args) do
+  #fetches an event with a given id in conn
+  def fetch_event(conn, _args) do
     id = conn.params["id"]
     event = Events.get_event!(id)
+    invites = event.invites;
     #TODO ADD User Accces so invites can view
-
-    assign(conn, :event, event)
+    conn = assign(conn, :event, event)
+    assign(conn, :invites, invites)
   end
 
   def index(conn, _params) do
@@ -48,6 +68,7 @@ defmodule EventManagerWeb.EventController do
   def create(conn, %{"event" => event_params}) do
     event_params = event_params
     |> Map.put("owner_id", conn.assigns[:current_user].id)
+    |> Map.put("invites", [])
     case Events.create_event(event_params) do
       {:ok, event} ->
         conn
@@ -61,12 +82,14 @@ defmodule EventManagerWeb.EventController do
 
   def show(conn, %{"id" => _id}) do
     event = conn.assigns[:event]
-    render(conn, "show.html", event: event)
+    invites = conn.assigns[:invites]
+    render(conn, "show.html", event: event, invites: invites)
   end
 
   def edit(conn, %{"id" => _id}) do
     event = conn.assigns[:event]
     changeset = Events.change_event(event)
+
     render(conn, "edit.html", event: event, changeset: changeset)
   end
 

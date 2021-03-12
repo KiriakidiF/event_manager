@@ -9,6 +9,9 @@ defmodule EventManager.Events.Event do
 
     belongs_to :owner, EventManager.Users.User
 
+    has_many :invites, EventManager.Invites.Invite
+    has_many :comments, EventManager.Comments.Comment
+
     timestamps()
   end
 

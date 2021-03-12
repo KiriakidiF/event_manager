@@ -23,8 +23,72 @@
   </li>
 
 </ul>
+<%= if is_current_user?(@conn, @event.owner_id) do %>
+  <p> Response: Yes: <%= count_yes(@invites) %> | Maybe <%= count_maybe(@invites) %> | No <%= count_no(@invites) %> | No Response <%= count_none(@invites) %> </p>
+
+  <table>
+    <tr>
+      <th>Invitee</th>
+      <th>Response</th>
+    </tr>
+    <%= for invite <- @invites do %>
+      <tr>
+        <td><%= invite.user_email %></td>
+        <td><%= invite.response %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
 
 <%= if is_current_user?(@conn, @event.owner_id) do %>
-  <span><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>
+  <span><%= link "Edit Event", to: Routes.event_path(@conn, :edit, @event) %></span>
+  <span><%= link "Edit Invites", to: Routes.invite_path(@conn, :index, %{event_id: @event}) %></span>
 <% end %>
-<span><%= link "Home", to: Routes.page_path(@conn, :index) %></span>
+<%= if is_invited_user?(@conn, @event) do %>
+  <h3> Invite Response </h3>
+  <%= render(
+    EventManagerWeb.InviteView,
+    "response_form.html",
+    changeset: get_invite_changeset(@conn, @event),
+    action: Routes.invite_path(@conn, :update, get_invite_id(@conn, @event))
+  ) %>
+<% end %>
+
+<h3> Comments </h3>
+<%= render(
+  EventManagerWeb.CommentView,
+  "form.html",
+  changeset: get_comment_changeset(@conn, @event.id),
+  action: Routes.comment_path(@conn, :create, %{event_id: @event.id})
+) %>
+
+<%= for comment <- get_comments(@event.id) do %>
+  <div class="row">
+    <div class="col">
+      <div class="col-1-auto card">
+          <div class="card-body">
+            <p class="card-text"><%= comment.body %></p>
+            <p class="card-text">Posted By: <%= get_comment_owner(comment) %></p>
+            <img src="<%= Routes.user_path(@conn, :photo, comment.user_id) %>"
+              alt=""
+              width="100"
+              height="100">
+            <%= if owns_comment?(@conn, comment)
+              || is_current_user?(@conn, @event.owner_id) do %>
+              <span><%= link(
+                  "Edit",
+                  to: Routes.comment_path(@conn, :edit,
+                    comment),
+                  class: "view-comment-link"
+                ) %></span>
+              <span><%= link "Delete",
+                to: Routes.comment_path(@conn, :delete, comment.id),
+                method: :delete,
+                data: [confirm: "Are you sure?"]
+                %></span>
+            <% end %>
+          </div>
+      </div>
+    </div>
+  </div>
+<% end %>

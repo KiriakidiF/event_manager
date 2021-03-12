@@ -1,0 +1,32 @@
+<h1>Listing Invites</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Invitee</th>
+      <th>Response</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <%= if @invites != nil do %>
+      <%= for invite <- @invites do %>
+          <tr>
+            <td><%= invite.user_email %></td>
+            <td><%= invite.response %></td>
+
+            <td>
+              <span><%= link "Show", to: Routes.invite_path(@conn, :show, invite) %></span>
+              <span><%= link "Edit", to: Routes.invite_path(@conn, :edit, invite) %></span>
+              <span><%= link "Delete", to: Routes.invite_path(@conn, :delete, invite), method: :delete, data: [confirm: "Are you sure?"] %></span>
+            </td>
+          </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Invite", to: Routes.invite_path(@conn, :new, %{event_id: @event_id}) %></span>
+<span><%= link "Event Page", to: Routes.event_path(@conn, :show, @event_id) %>

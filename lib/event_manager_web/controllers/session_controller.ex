@@ -4,16 +4,19 @@ defmodule EventManagerWeb.SessionController do
 
   def create(conn, %{"email" => email}) do
     login = EventManager.Users.get_user_by_email(email)
+    IO.inspect("create session")
+    IO.inspect(get_session(conn, :redirect))
     if login do
       conn
       |> put_session(:login_id, login.id)
       |> put_flash(:info, "Welcome #{login.name}")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> assign(:current_user, login)
+      |> redirect(to: get_session(conn, :redirect))
     else
       conn
       |> delete_session(:login_id)
       |> put_flash(:error, "Failed to Login")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> redirect(to: get_session(conn, :redirect))
     end
   end
 
