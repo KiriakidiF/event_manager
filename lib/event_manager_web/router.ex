@@ -7,7 +7,7 @@ defmodule EventManagerWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug EventManagerWeb.Plugs.FetchUser
+    plug EventManagerWeb.Plugs.FetchSession
   end
 
   pipeline :api do
@@ -22,6 +22,8 @@ defmodule EventManagerWeb.Router do
     resources "/users", UserController
     resources "/events", EventController
     resources "/invites", InviteController
+    resources "/comments", CommentController
+
 
 
     # Following Lecture code 11-photoblog

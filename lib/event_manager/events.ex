@@ -40,7 +40,8 @@ defmodule EventManager.Events do
     event = Repo.get!(Event, id)
     |> Repo.preload(:owner)
     |> Repo.preload(:invites)
-    IO.inspect(event.invites)
+    |> Repo.preload(:comments)
+    IO.inspect(event.comments)
     event
   end
 

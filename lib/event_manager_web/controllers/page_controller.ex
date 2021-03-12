@@ -3,6 +3,9 @@ defmodule EventManagerWeb.PageController do
 
   alias EventManager.Events
 
+  alias EventManagerWeb.Plugs
+  plug Plugs.PutRedirect
+
   def index(conn, _params) do
     events = Events.list_events()
     render(conn, "index.html", events: events)

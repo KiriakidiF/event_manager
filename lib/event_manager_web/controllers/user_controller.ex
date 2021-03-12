@@ -4,16 +4,19 @@ defmodule EventManagerWeb.UserController do
   alias EventManager.Users
   alias EventManager.Users.User
 
+  alias EventManager.Plugs
+
   def index(conn, _params) do
     users = Users.list_users()
     render(conn, "index.html", users: users)
   end
 
-  def register(conn, _params) do
+  def register(conn, _args) do
     changeset = Users.change_user(%User{})
     render(conn, "register.html", changeset: changeset)
   end
 
+  @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   def new(conn, _params) do
     changeset = Users.change_user(%User{})
     render(conn, "new.html", changeset: changeset)
@@ -21,13 +24,14 @@ defmodule EventManagerWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     case Users.create_user(user_params) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
         |> put_flash(:info, "User created successfully.")
-        |> redirect(to: Routes.user_path(conn, :show, user))
+        |> redirect(to: conn.get_session(:redirect))
+          #to: Routes.user_path(conn, :show, user))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "register.html", changeset: changeset)
     end
   end
 

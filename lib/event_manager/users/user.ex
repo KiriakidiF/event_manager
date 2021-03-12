@@ -7,6 +7,7 @@ defmodule EventManager.Users.User do
     field :name, :string
 
     has_many :events, EventManager.Events.Event
+    has_many :comments, EventManager.Comments.Comment
 
     timestamps()
   end

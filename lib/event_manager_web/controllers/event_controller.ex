@@ -4,9 +4,11 @@ defmodule EventManagerWeb.EventController do
   alias EventManager.Events
   alias EventManager.Events.Event
 
-  alias EventManager.Invites
+  #alias EventManager.Invites
 
   alias EventManagerWeb.Plugs
+  plug Plugs.PutRedirect when action in
+    [:show]
   plug Plugs.RequireUser
   plug :fetch_event when action in
     [:show, :edit, :update, :delete]

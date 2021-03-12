@@ -1,6 +1,13 @@
 defmodule EventManagerWeb.Helpers do
 
+  alias EventManager.Events
+
   alias EventManager.Invites
+
+  alias EventManager.Users
+
+  alias EventManager.Comments
+  alias EventManager.Comments.Comment
 
   def have_current_user?(conn) do
     conn.assigns[:current_user] != nil
@@ -25,6 +32,30 @@ defmodule EventManagerWeb.Helpers do
     invite = Enum.find(invites, nil,
       fn inv -> inv.user_email == user.email end)
     Invites.change_invite(invite)
+  end
+
+  def get_comment_changeset(conn, event_id) do
+    user = conn.assigns[:current_user]
+    comment = %Comment{}
+    |> Map.put("event_id", event_id)
+    |> Map.put("user_id", user.id)
+    Comments.change_comment(comment)
+  end
+
+  def get_comment_owner(comment) do
+    user = Users.get_user!(comment.user_id)
+    user.name
+  end
+
+  def get_comments(event_id) do
+    event = Events.get_event!(event_id)
+    comments = event.comments
+    comments
+  end
+
+  def owns_comment?(conn, comment) do
+    user = conn.assigns[:current_user]
+    user.id == comment.user_id
   end
 
   def get_invite_id(conn, event) do

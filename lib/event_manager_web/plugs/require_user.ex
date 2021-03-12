@@ -9,7 +9,7 @@ defmodule EventManagerWeb.Plugs.RequireUser do
     else
       conn
       |> put_flash(:error, "You must first log in.")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> redirect(to: Routes.user_path(conn, :register))
       |> halt()
     end
   end
