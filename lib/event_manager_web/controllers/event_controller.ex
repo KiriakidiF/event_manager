@@ -4,9 +4,11 @@ defmodule EventManagerWeb.EventController do
   alias EventManager.Events
   alias EventManager.Events.Event
 
+  alias EventManager.Invites
+
   alias EventManagerWeb.Plugs
   plug Plugs.RequireUser
-  plug :fetch_post when action in
+  plug :fetch_event when action in
     [:show, :edit, :update, :delete]
   plug :require_owner when action in
     [:edit, :update, :delete]
@@ -26,13 +28,14 @@ defmodule EventManagerWeb.EventController do
     end
   end
 
-  #fetches a pose with a given id in conn
-  def fetch_post(conn, _args) do
+  #fetches an event with a given id in conn
+  def fetch_event(conn, _args) do
     id = conn.params["id"]
     event = Events.get_event!(id)
+    invites = event.invites;
     #TODO ADD User Accces so invites can view
-
-    assign(conn, :event, event)
+    conn = assign(conn, :event, event)
+    assign(conn, :invites, invites)
   end
 
   def index(conn, _params) do
@@ -48,6 +51,7 @@ defmodule EventManagerWeb.EventController do
   def create(conn, %{"event" => event_params}) do
     event_params = event_params
     |> Map.put("owner_id", conn.assigns[:current_user].id)
+    |> Map.put("invites", [])
     case Events.create_event(event_params) do
       {:ok, event} ->
         conn
@@ -61,7 +65,8 @@ defmodule EventManagerWeb.EventController do
 
   def show(conn, %{"id" => _id}) do
     event = conn.assigns[:event]
-    render(conn, "show.html", event: event)
+    invites = conn.assigns[:invites]
+    render(conn, "show.html", event: event, invites: invites)
   end
 
   def edit(conn, %{"id" => _id}) do

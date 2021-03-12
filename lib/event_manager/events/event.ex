@@ -9,6 +9,8 @@ defmodule EventManager.Events.Event do
 
     belongs_to :owner, EventManager.Users.User
 
+    has_many :invites, EventManager.Invites.Invite
+
     timestamps()
   end
 

@@ -39,6 +39,7 @@ defmodule EventManager.Events do
   def get_event!(id) do
     Repo.get!(Event, id)
     |> Repo.preload(:owner)
+    |> Repo.preload(:invites)
   end
 
   @doc """

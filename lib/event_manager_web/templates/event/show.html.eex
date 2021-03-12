@@ -23,8 +23,27 @@
   </li>
 
 </ul>
+<%= if is_current_user?(@conn, @event.owner_id) do %>
+  <p> Response: Yes: <%= count_yes(@invites) %> | Maybe <%= count_maybe(@invites) %> | No <%= count_no(@invites) %> | No Response <%= count_none(@invites) %> </p>
+
+  <table>
+    <tr>
+      <th>Invitee</th>
+      <th>Response</th>
+    </tr>
+    <%= for invite <- @invites do %>
+      <tr>
+        <td><%= invite.user %></td>
+        <td><%= invite.response %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+
 
 <%= if is_current_user?(@conn, @event.owner_id) do %>
-  <span><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>
+  <span><%= link "Edit Event", to: Routes.event_path(@conn, :edit, @event) %></span>
+  <span><%= link "Edit Invites", to: Routes.invite_path(@conn, :index, @invites) %></span>
 <% end %>
 <span><%= link "Home", to: Routes.page_path(@conn, :index) %></span>
