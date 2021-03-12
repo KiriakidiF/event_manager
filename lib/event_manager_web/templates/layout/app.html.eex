@@ -19,6 +19,10 @@
           <div class="row">
             <%= link("Home", to: Routes.page_path(@conn, :index)) %>
             <p id=login-id> Logged in as: <%= @current_user.name %> </p>
+            <img src="<%= Routes.user_path(@conn, :photo, @current_user.id) %>"
+              alt=""
+              width="50"
+              height="50">
             <%= link("Logout", to: Routes.session_path(@conn, :delete),
               method: :delete) %>
           </div>

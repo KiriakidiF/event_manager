@@ -69,7 +69,10 @@
           <div class="card-body">
             <p class="card-text"><%= comment.body %></p>
             <p class="card-text">Posted By: <%= get_comment_owner(comment) %></p>
-            <img src="<%= Routes.user_path(@conn, :photo, comment.user_id) %>" alt="">
+            <img src="<%= Routes.user_path(@conn, :photo, comment.user_id) %>"
+              alt=""
+              width="100"
+              height="100">
             <%= if owns_comment?(@conn, comment)
               || is_current_user?(@conn, @event.owner_id) do %>
               <span><%= link(
