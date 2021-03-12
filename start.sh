@@ -11,7 +11,7 @@ if [ ! -e "$CFGD/base" ]; then
 fi
 
 DB_PASS=$(cat "$CFGD/db_pass")
-export DATABASE_URL=ecto://event_manager:$DB_PASS@localhost/event_manager_dev
+export DATABASE_URL=ecto://event_manager:$DB_PASS@localhost/event_manager_prod
 
 SECRET_KEY_BASE=$(cat "$CFGD/base")
 export SECRET_KEY_BASE
