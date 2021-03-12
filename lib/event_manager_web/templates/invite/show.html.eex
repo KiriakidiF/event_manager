@@ -1,7 +1,10 @@
 <h1>Show Invite</h1>
 
 <ul>
-
+  <li>
+    <strong>Invitee:</strong>
+    <%= @invite.user_email %>
+  </li>
   <li>
     <strong>Response:</strong>
     <%= @invite.response %>

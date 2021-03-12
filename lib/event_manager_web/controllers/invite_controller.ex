@@ -47,7 +47,8 @@ defmodule EventManagerWeb.InviteController do
 
   def update(conn, %{"id" => id, "invite" => invite_params}) do
     invite = Invites.get_invite!(id)
-
+    IO.inspect(invite)
+    IO.inspect(invite_params)
     case Invites.update_invite(invite, invite_params) do
       {:ok, invite} ->
         conn

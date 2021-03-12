@@ -12,7 +12,22 @@ defmodule EventManagerWeb.EventController do
     [:show, :edit, :update, :delete]
   plug :require_owner when action in
     [:edit, :update, :delete]
+  plug :require_access when action in [:show]
   #todo make sure user has access to show specific event
+
+  def require_access(conn, _args) do
+    event = conn.assigns[:event]
+
+    if is_current_user?(conn, event.owner_id)
+      || is_invited_user?(conn, event) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You do not have access to view this event.")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
+  end
 
   def require_owner(conn, _args) do
     event = conn.assigns[:event]
@@ -72,6 +87,7 @@ defmodule EventManagerWeb.EventController do
   def edit(conn, %{"id" => _id}) do
     event = conn.assigns[:event]
     changeset = Events.change_event(event)
+
     render(conn, "edit.html", event: event, changeset: changeset)
   end
 
