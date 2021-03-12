@@ -38,7 +38,9 @@ defmodule EventManager.Invites do
       ** (Ecto.NoResultsError)
 
   """
-  def get_invite!(id), do: Repo.get!(Invite, id)
+  def get_invite!(id) do
+    Repo.get!(Invite, id)
+  end
 
   @doc """
   Creates a invite.

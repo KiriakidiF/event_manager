@@ -55,4 +55,3 @@
     action: Routes.invite_path(@conn, :update, get_invite_id(@conn, @event))
   ) %>
 <% end %>
-<span><%= link "Home", to: Routes.page_path(@conn, :index) %></span>
