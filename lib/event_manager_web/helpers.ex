@@ -34,6 +34,6 @@ defmodule EventManagerWeb.Helpers do
   end
 
   def count_none(invites) do
-    count_replies(invites, nil)
+    count_replies(invites, "")
   end
 end

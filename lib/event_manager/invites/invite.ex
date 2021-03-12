@@ -3,19 +3,20 @@ defmodule EventManager.Invites.Invite do
   import Ecto.Changeset
 
   schema "invites" do
-    field :response, :boolean, default: nil
+    field :response, :string, default: ""
     belongs_to :event, EventManager.Events.Event
 
-    belongs_to :user, EventManager.Users.User,
-      foreign_key: :user_email
+    field :user_email, :string
 
     timestamps()
   end
 
   @doc false
   def changeset(invite, attrs) do
+    IO.inspect(attrs)
     invite
-    |> cast(attrs, [:response, :user_email])
-    |> validate_required([:response, :user_email])
+    |> cast(attrs, [:response, :user_email, :event_id])
+    |> validate_required([:user_email, :event_id])
+    |> validate_format(:user_email, ~r/@/)
   end
 end

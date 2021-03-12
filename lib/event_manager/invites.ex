@@ -8,6 +8,9 @@ defmodule EventManager.Invites do
 
   alias EventManager.Invites.Invite
 
+  alias EventManager.Events
+  alias EventManager.Events.Event
+
   @doc """
   Returns the list of invites.
 
@@ -17,7 +20,7 @@ defmodule EventManager.Invites do
       [%Invite{}, ...]
 
   """
-  def list_invites() do
+  def list_invites(event) do
     Repo.all(Invite)
   end
 

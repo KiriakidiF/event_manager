@@ -7,14 +7,11 @@ defmodule EventManager.Repo.Migrations.CreateInvites do
       add :event_id,
         references(:events,
           on_delete: :delete_all)
-      add :user_email,
-        references(:users,
-          on_delete: :nothing)
+      add :user_email, :string, null: false
 
       timestamps()
     end
 
     create index(:invites, [:event_id])
-    create index(:invites, [:user_email])
   end
 end

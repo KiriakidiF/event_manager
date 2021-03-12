@@ -3,15 +3,18 @@
 <table>
   <thead>
     <tr>
+      <th>Invitee</th>
       <th>Response</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody>
+
     <%= if @invites != nil do %>
       <%= for invite <- @invites do %>
           <tr>
+            <td><%= invite.user_email %></td>
             <td><%= invite.response %></td>
 
             <td>
@@ -21,8 +24,8 @@
             </td>
           </tr>
       <% end %>
-    <%= end %>
+    <% end %>
   </tbody>
 </table>
 
-<span><%= link "New Invite", to: Routes.invite_path(@conn, :new) %></span>
+<span><%= link "New Invite", to: Routes.invite_path(@conn, :new, %{event_id: @event_id}) %></span>

@@ -4,27 +4,33 @@ defmodule EventManagerWeb.InviteController do
   alias EventManager.Invites
   alias EventManager.Invites.Invite
 
-  def index(conn, _params) do
-    IO.inspect("Got here")
-    invites = conn.assigns[:invites]
-    #invites = Invites.list_invites(event)
-    render(conn, "index.html", invites: invites)
+  alias EventManager.Events
+
+  def index(conn, %{"event_id" => event_id}) do
+    event = Events.get_event!(event_id)
+    invites = event.invites
+    IO.inspect(invites)
+    render(conn, "index.html", invites: invites, event_id: event_id)
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"event_id" => event_id}) do
     changeset = Invites.change_invite(%Invite{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, event_id: event_id)
   end
 
-  def create(conn, %{"invite" => invite_params}) do
+  #def create(conn, %{"invite" => invite_params}) do
+  def create(conn, %{"invite" => invite_params, "event_id" => event_id}) do
+    invite_params = invite_params
+    |> Map.put("event_id", event_id)
     case Invites.create_invite(invite_params) do
       {:ok, invite} ->
         conn
         |> put_flash(:info, "Invite created successfully.")
-        |> redirect(to: Routes.invite_path(conn, :show, invite))
+        |> redirect(to: Routes.invite_path(conn, :show, invite, event_id: event_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        IO.inspect(changeset)
+        render(conn, "new.html", changeset: changeset, event_id: event_id)
     end
   end
 

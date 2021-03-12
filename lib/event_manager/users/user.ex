@@ -8,9 +8,6 @@ defmodule EventManager.Users.User do
 
     has_many :events, EventManager.Events.Event
 
-    has_many :invites, EventManager.Invites.Invite,
-      foreign_key: :email
-
     timestamps()
   end
 

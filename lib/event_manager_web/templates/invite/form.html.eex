@@ -5,9 +5,9 @@
     </div>
   <% end %>
 
-  <%= label f, :response %>
-  <%= multiple_select f, :response, ["yes", "no", "maybe"]%>
-  <%= error_tag f, :response %>
+  <%= label f, :user_email %>
+  <%= text_input f, :user_email %>
+  <%= error_tag f, :user_email %>
 
   <div>
     <%= submit "Save" %>
