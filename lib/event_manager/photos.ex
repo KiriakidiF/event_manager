@@ -43,6 +43,7 @@ defmodule EventManager.Photos do
   end
 
   def base_path(hash) do
+    #TODO figure out how to abstract env
     Path.expand("~/.local/data/event_manager")
     |> Path.join("prod")
     |> Path.join(String.slice(hash, 0, 2))

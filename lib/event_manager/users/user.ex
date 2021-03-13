@@ -17,7 +17,7 @@ defmodule EventManager.Users.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :email, :profile_hash])
-    |> validate_required([:name, :email, :profile_hash])
+    |> validate_required([:name, :email])
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
   end

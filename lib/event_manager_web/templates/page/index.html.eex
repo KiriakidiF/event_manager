@@ -18,20 +18,22 @@
   <div class="row">
     <div class="row">
       <%= for event <- @events do %>
-        <!-- TODO: Only show cards user has access to -->
-        <div class="col-4-auto card">
-          <div class="card-body">
-            <p class="card-text event-name"><%= event.name %></p>
-            <p class="card-text"><%= event.owner.name %></p>
-            <p class="card-text"><%= event.desc %></p>
-            <p class="card-text"><%= event.date %></p>
-            <%= link(
-                  "View Event",
-                  to: Routes.event_path(@conn, :show, event),
-                  class: "view-event-link"
-                ) %>
+        <%= if is_current_user?(@conn, event.owner_id)
+          || is_invited_user?(@conn, event) do %>
+          <div class="col-4-auto card">
+            <div class="card-body">
+              <p class="card-text event-name"><%= event.name %></p>
+              <p class="card-text"><%= event.owner.name %></p>
+              <p class="card-text"><%= event.desc %></p>
+              <p class="card-text"><%= event.date %></p>
+              <%= link(
+                    "View Event",
+                    to: Routes.event_path(@conn, :show, event),
+                    class: "view-event-link"
+                  ) %>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   </div>

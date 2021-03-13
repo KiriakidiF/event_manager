@@ -24,9 +24,15 @@ defmodule EventManagerWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     up = user_params["profile"]
-    {:ok, hash} = Photos.save_photo(up.filename, up.path)
-    user_params = user_params
-    |> Map.put("profile_hash", hash)
+    user_params =
+      if up do
+        {:ok, hash} = Photos.save_photo(up.filename, up.path)
+        user_params = user_params
+        |> Map.put("profile_hash", hash)
+        user_params
+      else
+        user_params
+      end
 
     case Users.create_user(user_params) do
       {:ok, _user} ->
