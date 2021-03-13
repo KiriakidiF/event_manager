@@ -80,6 +80,14 @@ defmodule EventManagerWeb.EventController do
     end
   end
 
+  def show(conn, %{"id" => id, "invited" => true}) do
+    event = conn.assigns[:event]
+    invites = conn.assigns[:invites]
+    conn |> put_flash(:info, "Invite Link: " <>
+      current_url(conn, %{id: id}))
+    render(conn, "show.html", event: event, invites: invites)
+  end
+
   def show(conn, %{"id" => _id}) do
     event = conn.assigns[:event]
     invites = conn.assigns[:invites]

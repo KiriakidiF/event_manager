@@ -22,11 +22,13 @@ defmodule EventManagerWeb.InviteController do
   def create(conn, %{"invite" => invite_params, "event_id" => event_id}) do
     invite_params = invite_params
     |> Map.put("event_id", event_id)
+    #TODO abstract hardcoded url
     case Invites.create_invite(invite_params) do
-      {:ok, invite} ->
+      {:ok, _invite} ->
         conn
-        |> put_flash(:info, "Invite created successfully.")
-        |> redirect(to: Routes.invite_path(conn, :show, invite, event_id: event_id))
+        |> put_flash(:info, "Invite created successfully. Invite Link: "
+          <> "http://events.tkwaffle.site/events/" <> event_id)
+        |> redirect(to: Routes.event_path(conn, :show, event_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         IO.inspect(changeset)
